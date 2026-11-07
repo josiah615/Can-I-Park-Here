@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="1000" viewBox="0 0 420 500">
+  <rect width="420" height="500" fill="#83908b"/>
+  <rect x="201" y="0" width="18" height="500" fill="#4d5653"/>
+  <g font-family="Overpass, 'Arial Narrow', Arial, Helvetica, sans-serif" font-weight="800" text-anchor="middle">
+    <rect x="60" y="40" width="300" height="420" rx="12" fill="#fbfcfa" stroke="#b3242a" stroke-width="8"/>
+    <text x="210" y="110" font-size="42" fill="#b3242a" textLength="250" lengthAdjust="spacingAndGlyphs">NO PARKING</text>
+    <text x="210" y="170" font-size="36" fill="#b3242a">6 PM – 8 AM</text>
+    <text x="210" y="220" font-size="30" fill="#b3242a">EVERY DAY</text>
+    <text x="210" y="290" font-size="28" fill="#121a16" textLength="250" lengthAdjust="spacingAndGlyphs">EXCEPT VEHICLES</text>
+    <text x="210" y="330" font-size="30" fill="#121a16">WITH</text>
+    <text x="210" y="380" font-size="40" fill="#121a16">ZONE 4</text>
+    <text x="210" y="425" font-size="30" fill="#121a16">PERMITS</text>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="1240" viewBox="0 0 420 620">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa7a2"/><stop offset="1" stop-color="#6f7b76"/></linearGradient></defs>
+  <rect width="420" height="620" fill="url(#sky)"/>
+  <rect x="201" y="0" width="18" height="620" fill="#4d5653"/><rect x="204" y="0" width="4" height="620" fill="#66706c"/>
+  <g font-family="Overpass, 'Arial Narrow', Arial, Helvetica, sans-serif" font-weight="800" text-anchor="middle">
+    <rect x="70" y="30" width="280" height="200" rx="12" fill="#fbfcfa" stroke="#00704a" stroke-width="8"/>
+    <circle cx="210" cy="44" r="3" fill="#9aa"/><circle cx="210" cy="216" r="3" fill="#9aa"/>
+    <text x="210" y="98" font-size="54" fill="#00704a" textLength="200" lengthAdjust="spacingAndGlyphs">2 HOUR</text>
+    <text x="210" y="140" font-size="34" fill="#00704a">PARKING</text>
+    <text x="210" y="180" font-size="30" fill="#00704a">8 AM – 6 PM</text>
+    <text x="210" y="208" font-size="24" fill="#00704a">MON THRU SAT</text>
+    <rect x="70" y="250" width="280" height="210" rx="12" fill="#fbfcfa" stroke="#b3242a" stroke-width="8"/>
+    <circle cx="125" cy="318" r="38" fill="none" stroke="#b3242a" stroke-width="7"/>
+    <text x="125" y="336" font-size="48" fill="#121a16">P</text>
+    <line x1="98" y1="291" x2="152" y2="345" stroke="#b3242a" stroke-width="7"/>
+    <text x="258" y="312" font-size="30" fill="#b3242a">NO</text>
+    <text x="258" y="344" font-size="28" fill="#b3242a" textLength="140" lengthAdjust="spacingAndGlyphs">PARKING</text>
+    <text x="210" y="398" font-size="30" fill="#b3242a">7 AM – 9 AM</text>
+    <text x="210" y="434" font-size="20" fill="#b3242a" textLength="244" lengthAdjust="spacingAndGlyphs">TUESDAY · STREET CLEANING</text>
+    <rect x="70" y="480" width="280" height="110" rx="12" fill="#fbfcfa" stroke="#b3242a" stroke-width="8"/>
+    <text x="210" y="528" font-size="32" fill="#b3242a" textLength="240" lengthAdjust="spacingAndGlyphs">TOW-AWAY ZONE</text>
+    <text x="210" y="566" font-size="22" fill="#121a16">2 AM – 6 AM DAILY</text>
+  </g>
+</svg>
