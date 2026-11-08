@@ -1,7 +1,7 @@
 # PRD: Can I Park Here?
 
 **Owner:** Josiah Johnson
-**Status:** Draft v1 — November 2, 2026
+**Status:** v1.1 — built November 7, 2026 (see Change log)
 **Demo date:** Monday, November 9, 2026 (SpotGenius CEO follow-up)
 
 ---
@@ -54,7 +54,7 @@ A working mobile web app where the CEO can photograph (or upload) a real sign st
 | ID | Requirement | Acceptance criteria |
 |---|---|---|
 | F1 | Capture or upload a photo | On a phone, the button opens the camera; on desktop, a file picker. JPG/PNG/WebP up to 20 MB accepted. Preview shows before checking. |
-| F2 | Plan inputs | Arrival time defaults to now (rounded to 5 min). Stay options: 15m, 30m, 1h, 2h, 3h, all day, overnight. |
+| F2 | Plan inputs | Arrival defaults to now, with a Later option. Stay options: 15 min, 30 min, 1, 2, 3, 4 and 8 hr, overnight (until 8 AM). |
 | F3 | Sign analysis | Server sends image + plan to the Claude API (vision) and gets structured JSON back (schema below). |
 | F4 | Whole-stay evaluation | A rule that begins *during* the stay counts. Example: arrive 8:30 AM, stay 2h, street cleaning starts 9 AM → NO or YES, BUT. |
 | F5 | Verdict display | Large color-coded verdict, one-sentence headline, move-by time, rule list, warnings, confidence. |
@@ -68,25 +68,26 @@ A working mobile web app where the CEO can photograph (or upload) a real sign st
 {
   "verdict": "yes | limited | no | unclear",
   "headline": "One plain sentence answer",
-  "until": "Move by 3:50 PM Monday" ,
+  "moveBy": "3:50 PM Monday",
   "confidence": 0.94,
   "rules": [
     { "text": "2 hour parking · 8 AM – 6 PM · Mon–Sat", "applies": true, "why": "..." }
   ],
-  "warnings": ["If you stay past 2 AM, the car can be towed."]
+  "warnings": ["If you stay past 2 AM, the car can be towed."],
+  "retakeTip": null
 }
 ```
 
-Validate this on the server (e.g. with Zod). If validation fails, retry once, then return `unclear`.
+Validated on the server by `normalizeResult` in `lib/parking.js` (no dependencies). If the reply isn't valid JSON, retry once, then return `unclear`. Confidence below 0.45 becomes `unclear` with a retake tip.
 
 ## 6. Technical approach
 
-- **Stack:** Next.js (App Router) + TypeScript + Tailwind, deployed to Vercel
+- **Stack:** static HTML/CSS/JS front end (no build step) + Vercel serverless functions in `api/`, deployed to Vercel. Chosen over Next.js for the demo: zero build tooling, works on GitHub Pages as a fallback, and the whole app is small enough to read in one sitting.
 - **AI:** Anthropic API, model `claude-sonnet-5-5`, image passed as base64, prompt asks for JSON only
-- **API route:** `POST /api/check` → `{ image, arrivalISO, stayMinutes, notes }` → schema above
+- **API route:** `POST /api/check` → `{ image: {mediaType, data}, arrivalText, untilText, stayLabel, notes }` → schema above. `GET /api/health` tells the page whether the server is configured.
 - **Security:** API key only in server environment variables, never in the browser. Rate-limit the route (e.g. 10 requests/min per IP).
 - **Images:** Resize client-side to ~1600px on the long edge before upload (faster, cheaper). Don't store photos.
-- **Time zone:** Use the browser's local time zone; send ISO timestamp with offset.
+- **Time zone:** The browser writes the arrival and end times out in full ("Monday, November 9, 2026 at 1:50 PM") in its own time zone, so the server never guesses one.
 
 ### Prompt rules (must keep)
 - Read every sign top to bottom, including small print and arrows
@@ -96,9 +97,9 @@ Validate this on the server (e.g. with Zod). If validation fails, retry once, th
 
 ## 7. Testing & evaluation
 
-- `fixtures/signs/` — 20 real sign photos (take them around town this week) + `fixtures/labels.json` with the correct verdict for a fixed date/time/stay per photo
-- `npm run eval` — runs every fixture through `/api/check`, prints accuracy and per-photo diffs
-- Unit tests for schema validation and time-window helper functions
+- `fixtures/signs/` + `fixtures/labels.json`: 7 synthetic cases today (limit cuts stay short, street cleaning, Sunday, overnight tow-away, permit holder, no permit, not a sign). Add real photos as they're collected; target 20.
+- `npm run eval`: runs every fixture through the same pipeline as `/api/check`, prints a table and accuracy, and fails below 90%.
+- `npm test`: 12 unit tests for request validation, JSON parsing, result normalization, retry, error mapping, the API handler and rate limiting.
 - Manual test on an actual phone (iOS Safari + Android Chrome)
 
 ## 8. Milestones (6 days)
@@ -106,9 +107,9 @@ Validate this on the server (e.g. with Zod). If validation fails, retry once, th
 | Day | Milestone | Done when |
 |---|---|---|
 | Mon 11/2 | PRD + clickable prototype | Prototype works with sample sign ✅ |
-| Tue 11/3 | Project scaffold + `/api/check` returns valid JSON for the sample image | `curl` returns schema-valid JSON |
-| Wed 11/4 | Mobile UI (capture, inputs, verdict view) wired to API | Full flow works on phone |
-| Thu 11/5 | Collect 20 real sign photos, build eval script | `npm run eval` prints a score |
+| Tue 11/3 | Project scaffold + `/api/check` returns valid JSON for the sample image | Built ✅ (tested with a mocked Claude reply) |
+| Wed 11/4 | Mobile UI (capture, inputs, verdict view) wired to API | Built ✅, redesigned with the design skills |
+| Thu 11/5 | Collect 20 real sign photos, build eval script | Eval script ✅; real photos still to collect |
 | Fri 11/6 | Prompt tuning until ≥ 90% on eval; error states | Eval ≥ 90%, F6/F7 pass |
 | Sat 11/7 | User test with 5 real drivers; fix top 3 issues | Notes + changes logged |
 | Sun 11/8 | Deploy, rehearse demo, backup video recording | Public URL works on cellular |
@@ -136,9 +137,14 @@ Validate this on the server (e.g. with Zod). If validation fails, retry once, th
 2. Run `/init` to create `CLAUDE.md`, then add:
    ```
    - Source of truth for scope: PRD.md. Do not build out-of-scope items.
-   - Stack: Next.js App Router, TypeScript, Tailwind. Validate API output with Zod.
+   - Stack: static front end + Vercel functions in api/. Validate API output with normalizeResult in lib/parking.js.
    - Never put ANTHROPIC_API_KEY in client code.
    - After each milestone: run tests, then commit with a descriptive message.
    ```
 3. Turn on plan mode (Shift+Tab) and ask: *"Read PRD.md and propose an implementation plan for the Tuesday milestone only."* Review the plan, correct anything you disagree with, then approve.
 4. Build one milestone per session. When the conversation gets long, ask Claude to write progress to `PROGRESS.md`, run `/clear`, and start the next milestone fresh.
+
+## Change log
+
+- **v1.1 (Nov 7):** Built the full app. Redesigned the UI with five design skills (Impeccable, frontend-design, UI UX Pro Max, Web Interface Guidelines, Emil Kowalski's design engineering); see `DESIGN.md`. Added the Vercel API with rate limiting and output validation, unit tests, and the eval script. Renamed `until` to `moveBy` and added `retakeTip`.
+- **v1 (Nov 2):** Draft PRD and clickable prototype.

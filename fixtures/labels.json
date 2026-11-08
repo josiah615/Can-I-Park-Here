@@ -1,0 +1,65 @@
+[
+  {
+    "id": "two-hour-limit-cuts-stay-short",
+    "image": "signs/stack-2hr-cleaning-tow.png",
+    "arrivalText": "Monday, November 9, 2026 at 1:50 PM",
+    "untilText": "Monday, November 9, 2026 at 4:50 PM",
+    "stayLabel": "3 hours",
+    "notes": "",
+    "expected": "limited"
+  },
+  {
+    "id": "street-cleaning-now",
+    "image": "signs/stack-2hr-cleaning-tow.png",
+    "arrivalText": "Tuesday, November 10, 2026 at 8:30 AM",
+    "untilText": "Tuesday, November 10, 2026 at 9:30 AM",
+    "stayLabel": "1 hour",
+    "notes": "",
+    "expected": "no"
+  },
+  {
+    "id": "sunday-no-limits",
+    "image": "signs/stack-2hr-cleaning-tow.png",
+    "arrivalText": "Sunday, November 8, 2026 at 11:00 AM",
+    "untilText": "Sunday, November 8, 2026 at 2:00 PM",
+    "stayLabel": "3 hours",
+    "notes": "",
+    "expected": "yes"
+  },
+  {
+    "id": "overnight-hits-tow-away",
+    "image": "signs/stack-2hr-cleaning-tow.png",
+    "arrivalText": "Saturday, November 7, 2026 at 11:00 PM",
+    "untilText": "Sunday, November 8, 2026 at 8:00 AM",
+    "stayLabel": "overnight",
+    "notes": "",
+    "expected": ["no", "limited"]
+  },
+  {
+    "id": "permit-holder-overnight",
+    "image": "signs/permit-zone-4.png",
+    "arrivalText": "Wednesday, November 11, 2026 at 7:00 PM",
+    "untilText": "Thursday, November 12, 2026 at 8:00 AM",
+    "stayLabel": "overnight",
+    "notes": "I have a Zone 4 residential permit displayed.",
+    "expected": "yes"
+  },
+  {
+    "id": "no-permit-evening",
+    "image": "signs/permit-zone-4.png",
+    "arrivalText": "Wednesday, November 11, 2026 at 7:00 PM",
+    "untilText": "Wednesday, November 11, 2026 at 8:00 PM",
+    "stayLabel": "1 hour",
+    "notes": "",
+    "expected": "no"
+  },
+  {
+    "id": "not-a-sign",
+    "image": "signs/not-a-sign.png",
+    "arrivalText": "Monday, November 9, 2026 at 1:50 PM",
+    "untilText": "Monday, November 9, 2026 at 2:50 PM",
+    "stayLabel": "1 hour",
+    "notes": "",
+    "expected": "unclear"
+  }
+]
